@@ -29,6 +29,7 @@ func main() {
 		ERR3  = iota
 		ERR4
 	)
+	//0 1 haha haha 5 6
 	//每次出现const iota 归零
 	const (
 		ERRNEW1 = iota
@@ -39,5 +40,6 @@ func main() {
 		ERRNEW3  = iota
 		ERRNEW4
 	)
+	// 0 1 haha haha 100 5 6
 	fmt.Println(ERR1, ERR2, ERR3, ERR4)
 }
