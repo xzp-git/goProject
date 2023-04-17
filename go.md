@@ -175,13 +175,16 @@ func main() {
 
 ```
 ## 5.go中的基本数据类型
+
+---
+
 - `bool`
 - 数值类型
   - 整数
   - 浮点数
   - 复数
-  - `byte` 字节
-  - `rune` 类型
+  - `byte`
+  - `rune` 
 - 字符和 `string`
 
 ### 5.1 bool类型
@@ -199,9 +202,169 @@ func main() {
 - `uint32` 无符号32位整型(0到4294967295)
 - `uint64` 无符号64位整型(0到18446744073709551615)
 #### 5.2.2 浮点型
-- `float32` 32位浮点型数
-- `float64` 64位浮点型数
+- `float32` 32位浮点型数 （3.4 * 10 ^ 38）
+- `float64` 64位浮点型数（ 1.8 * 10 ^ 308）
 #### 5.2.3 其他
-- `byte` 等于 `uint8`
-- `rune` 等于 `int32`
- 
+- `byte` 等于 `uint8`  主要用于存放字符的ascall码 
+- `rune` 等于 `int32`  `byte` 类型表示的字符类型有限, 这个类型也是用来表示字符的. 例如 中文汉字
+- 如果处理的字符只是英文字符, 使用 `byte` 就可以, 如果有中文有英文，使用 `rune` 类型
+
+```go
+package main
+
+import "fmt"
+
+/*
+
+
+
+
+ */
+
+func main() {
+	//var num int8 = 127
+	//
+	//var f1 float32 = 399.3333
+
+	var c byte
+
+	c = 'a'
+	c1 := 97
+
+	fmt.Println(c)        //  97   打印 a 字符的 ASCll 码
+	fmt.Printf("c=%c", c) //使用格式化打印 字符串
+	fmt.Println(c1)
+	fmt.Printf("c1=%c1", c1)
+	fmt.Println("")
+
+	var b rune
+
+	b = '木'
+
+	fmt.Println(b)
+
+	var name string = "fooo"
+
+	fmt.Println(name)
+}
+```
+
+## 6. go中的基本数据类型转换
+
+--- 
+
+ ```go
+
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+
+
+func main() {
+
+	// 浮点数
+	a := 5.11
+	//转换为 整数
+	b := int(a)
+	fmt.Println(a)
+	fmt.Println(b)
+
+	//	go允许在底层结构相同的两个类型之间互转
+	//IT类型的底层是int类型
+
+	type IT int
+
+	var c IT = 199
+
+	//将c IT 类型 转换为 int， b现在是 int 类型
+	var d int = int(c)
+	var e IT = IT(b)
+
+	fmt.Println(e)
+
+	fmt.Println(d)
+
+	//	字符串 转数字
+	var str = "12e"
+	myInt, error := strconv.Atoi(str)
+
+	if error != nil {
+		fmt.Println(error)
+		fmt.Println("Atoi error")
+	}
+	fmt.Println(myInt)
+
+	//数字转字符串
+
+	var num = 998
+
+	mystr := strconv.Itoa(num)
+
+	fmt.Println(mystr)
+}
+
+```
+
+## 7.字符串格式化转换
+
+--- 
+
+ ```go
+   {
+		//字符串转换为float32
+		value, error := strconv.ParseFloat("3.11414", 64)
+
+		if error != nil {
+			fmt.Println(error)
+			fmt.Println("Atoi error")
+		}
+		fmt.Println(value)
+	}
+
+	{
+		//字符串转换为int
+		//这里 base 参数是指 你的 字符串参数 是 几进制 然后 吧这个 base进制的字符串 转换成bitSize位的十进制数字
+		value, error := strconv.ParseInt("11", 2, 64)
+
+		if error != nil {
+			fmt.Println(error)
+			fmt.Println("Atoi error")
+		}
+		fmt.Println(value)
+	}
+
+	{
+		//字符串转换为bool
+		//这里 base 参数是指 你的 字符串参数 是 几进制 然后 吧这个 base进制的字符串 转换成bitSize位的十进制数字
+		value, error := strconv.ParseBool("0")
+		// "0"  -> false   "1" -> true   "true" -> true  否则就是 false
+		if error != nil {
+			fmt.Println(error)
+			fmt.Println("Atoi error")
+		}
+		fmt.Println(value)
+	}
+
+	{
+		//基本类型转字符串
+		value := strconv.FormatBool(true)
+		fmt.Println(value)
+	}
+
+	{
+		//基本类型转字符串
+		value := strconv.FormatFloat(3.141555, 'f', -1, 64)
+		fmt.Println(value)
+	}
+
+	{
+		//基本类型转字符串
+		value := strconv.FormatInt(42, 16)
+		fmt.Println(value)
+	}
+```
+
+
