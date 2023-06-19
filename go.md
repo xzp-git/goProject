@@ -561,6 +561,8 @@ func main() {
 
 ### 9.6 字符串常用的方法
 
+---
+
 ```go
 package main
 
@@ -597,5 +599,569 @@ func main() {
   //去掉字符串 前后的字符
   fmt.Println(strings.Trim("   -wf- w e-  --", " -"))
   
+}
+```
+
+## 10. if、for、for range、 switch、 goto、语句
+
+--- 
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	score := 70
+
+	if score > 80 {
+		fmt.Println("良好")
+	} else if score > 90 {
+		fmt.Println("优秀")
+	} else {
+		fmt.Println("一般")
+	}
+
+	str := "tiantian向上"
+
+	runeStr := []rune(str)
+	
+	
+	//for 中的 break 和 continue 和 js中的用法一样
+
+	for i := 0; i < len(runeStr); i++ {
+		fmt.Printf("%c\r\n", runeStr[i])
+	}
+
+	for key, value := range runeStr {
+		fmt.Printf("%d %c\r\n", key, value)
+	}
+
+	switch {
+	case score > 80:
+		fmt.Println("良好")
+	default:
+		fmt.Println("一般")
+	}
+
+	for i := 0; i < 5; i++ {
+		for j := 0; j < 5; j++ {
+			fmt.Println(i, j)
+			if i == 0 && j == 3 {
+				goto over
+			}
+
+		}
+	}
+
+over:
+	fmt.Println("over")
+}
+
+```
+
+## 11. 数组
+
+### 11.1 数组的基本使用
+
+---
+
+```go
+
+package main
+
+import "fmt"
+
+func main() {
+
+	// go 语言提供了哪些集合类型的数据结构 数组、 *切片（slice ）、 * map、 list
+
+	//数组   courses1 和 courses2 的类型不一样
+	var courses1 [3]string //有3个字符串元素的 数组
+	var courses2 [4]string //有4个字符串元素的 数组
+	var courses3 []string  // [3]string 和  []string  是两种不一样的类型   [3]string类型 是数组 []string类型是切片
+
+	courses1[0] = "go"
+	courses1[1] = "grpc"
+	courses1[2] = "gin"
+
+	fmt.Println(courses1)
+
+	fmt.Printf("%T\r\n", courses1) //[3]string
+	fmt.Printf("%T\r\n", courses2) //[4]string
+	fmt.Printf("%T\r\n", courses3) //[]string
+
+	for _, value := range courses1 {
+		fmt.Println(value)
+	}
+
+}
+
+```
+
+### 11.2 数组的初始化
+
+---
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	// go 语言提供了哪些集合类型的数据结构 数组、 *切片（slice ）、 * map、 list
+
+	//数组   courses1 和 courses2 的类型不一样
+	var courses1 [3]string //有3个字符串元素的 数组
+	var courses2 [4]string //有4个字符串元素的 数组
+	var courses3 []string  // [3]string 和  []string  是两种不一样的类型   [3]string类型 是数组 []string类型是切片
+
+	courses1[0] = "go"
+	courses1[1] = "grpc"
+	courses1[2] = "gin"
+
+	fmt.Println(courses1)
+
+	fmt.Printf("%T\r\n", courses1) //[3]string
+	fmt.Printf("%T\r\n", courses2) //[4]string
+	fmt.Printf("%T\r\n", courses3) //[]string
+
+	for _, value := range courses1 {
+		fmt.Println(value)
+	}
+
+	//数组的初始化
+	courses4 := [3]string{"go", "grpc", "gin"}
+
+	fmt.Println(courses4)
+
+	courses5 := [3]string{2: "gin"} //没有初始化的位置 是 "" 空字符串
+	for _, value := range courses5 {
+		fmt.Println(value == "")
+	}
+	fmt.Println(courses5)
+
+	courses6 := [...]string{"go", "grpc", "gin"} //初始化是几个  类型长度就是几
+	fmt.Printf("%T\r\n", courses6)               //[3]string
+	fmt.Println(courses5
+
+
+  if courses4 == courses6 { //比较是比较数组的每一项是否相等
+    fmt.Println("equal")
+  }
+
+  // 多维数组
+  var courses7 = [2][2]string{{"go", "1h"}, {"grpc", "2h"}}
+  fmt.Println(courses7)
+}
+
+```
+
+## 12.切片
+
+---
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	
+
+  //切片
+  var courses8 []string
+
+  //append的用法   往 courses8 中 添加 元素 必须使用 courses8 接受
+  courses8 = append(courses8, "go")
+  courses8 = append(courses8, "grpc")
+  //切片的初始化  3 种
+  //1.从数组直接创建 2.使用 string{} 3. make
+  //1.从数组创建切片
+  allCourses4 := [5]string{"go", "grpc", "gin", "mysql", "elasticsearch"}
+
+  allCourses4Slice := allCourses4[0:1]
+
+  fmt.Println(allCourses4Slice)
+  fmt.Printf("%T\r\n", allCourses4Slice)
+
+  //2. 直接创建切片   allCourses4 := []string{"go", "grpc", "gin", "mysql", "elasticsearch"}
+
+  //3. make函数
+  allCourses4SliceForMake := make([]string, 3)
+  allCourses4SliceForMake[0] = "c"
+  allCourses4SliceForMake[1] = "c"
+  allCourses4SliceForMake[2] = "c"
+  //allCourses4SliceForMake[3] = "c"  使用make 创建切片 超过初始化长度 回报错
+  fmt.Println(allCourses4SliceForMake)
+
+  //tips:
+
+  var allCoursesNoLength []string
+
+  //allCoursesNoLength[0] = "c"  如果slice 没有声明初始化长度 这样赋值 会报错
+  //需要使用append方法
+  allCoursesNoLength = append(allCoursesNoLength, "c")
+
+  fmt.Println(allCoursesNoLength)
+
+  // 切片的访问 访问单个  访问多个
+  allCourses := []string{"go", "grpc", "gin", "mysql", "elasticsearch"}
+
+  fmt.Println(allCourses[0])
+  fmt.Println(allCourses[1:4])
+  fmt.Println(allCourses[1:]) // 只有 start  没有end  表示 取到完
+  fmt.Println(allCourses[:3]) //只有end  表示 取到 开头
+  fmt.Println(allCourses[:])  //没有 start 没有 end  表示 复制了一份
+
+  //切片的数据 添加
+
+  allCoursesForAdd := []string{"go", "grpc"}
+  allCoursesForAdd2 := []string{"mysql", "es"}
+
+  //allCoursesForAdd = append(allCoursesForAdd, "gin", "mysql", "es ")
+
+  //方法1 for 循环合并
+  //for _, value := range allCoursesForAdd2 {
+  //	allCoursesForAdd = append(allCoursesForAdd, value)
+  //}
+
+  //方法2 ...  合并
+  allCoursesForAdd = append(allCoursesForAdd, allCoursesForAdd2[1:]...)
+
+  fmt.Println(allCoursesForAdd)
+
+
+
+  //切片元素的删除和拷贝
+
+  //删除 比较麻烦
+
+  allCourses1 := []string{"go", "grpc", "gin", "mysql", "elasticsearch"}
+
+  mySlice := append(allCourses1[0:2], allCourses1[3:]...)
+  fmt.Println(mySlice)
+
+  mySlice1 := allCourses1[:3]
+  fmt.Println(mySlice1)
+
+  //复制 实际上 只是 指向了 同一个数据  没有做拷贝
+  mySliceCopy := allCourses1[:]
+  //allCourses1[0] = "java"   // 例如 我改变了 allCourses1的第一项  但是 mySliceCopy的第一项也会被改变
+  fmt.Println(allCourses1)
+  fmt.Println(mySliceCopy)
+
+  //拷贝
+  //var mySliceDeepCopy []string 这样声明 是没有长度的， 拷贝不会将长度也拷贝上
+  var mySliceDeepCopy = make([]string, len(allCourses1))
+  copy(mySliceDeepCopy, allCourses1)
+  fmt.Println(mySliceDeepCopy)
+
+  fmt.Println("----")
+  allCourses1[0] = "java" // 例如 我改变了 allCourses1的第一项  但是 mySliceCopy的第一项也会被改变,经过copy的切片不会被修改
+  fmt.Println(allCourses1)
+  fmt.Println(mySliceCopy)
+  fmt.Println(mySliceDeepCopy)
+
+}
+
+```
+
+
+## 13. Map
+
+--- 
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var courseMap = map[string]string{
+		"go":   "go工程师",
+		"grpc": "grpc入门",
+		"gin":  "gin深入理解",
+	}
+
+	// 取值
+	fmt.Println(courseMap["grpc"])
+
+	//放值
+	courseMap["mysql"] = "mysql的原理"
+
+	fmt.Println(courseMap)
+
+	/**
+	var nilMap map[string]string //  只定义 初始值 是 nil
+	// 如果一个map 没有初始化 这样赋值会报错
+	nilMap["mysql"] = "mysql"
+	*/
+
+	//var nilMap = map[string]string{}
+
+	var nilMap = make(map[string]string) //make 是内置函数， 主要用于slice map channel的初始化
+
+	nilMap["mysql"] = "mysql" //需要这样初始化才不会报错
+	nilMap["mysql1"] = "mysql1"
+	nilMap["mysql2"] = "mysql2"
+	nilMap["mysql3"] = "mysql3"
+
+	fmt.Println(nilMap)
+
+	//	遍历 map结构是无序的  每次遍历的顺序是不一样的
+
+	for key, value := range courseMap {
+		fmt.Printf("key: %s, value: %s \r\n", key, value)
+	}
+
+	//	courseMap 判断是否存在 java属性
+	_, ok := courseMap["java"]
+	if !ok {
+		fmt.Println("not in")
+	} else {
+		fmt.Println("in")
+	}
+
+	//	删除元素
+
+	delete(courseMap, "grpc")
+	fmt.Println(courseMap)
+
+	//	map不是线程安全的 两个协程 对map操作的话会报错 需要使用
+	//var syncMap = sync.Map{}
+
+	//fmt.Println(syncMap)
+
+}
+
+```
+## 14. 函数
+
+---
+
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+	"sync"
+)
+
+func main() {
+	//go函数支持普通函数、匿名函数、闭包
+
+	/*
+			go中函数是"一等公民"
+			1. 函数本身是可以当作变量
+			2. 匿名函数 闭包
+			3. 函数是可以满足接口的
+
+		函数参数传递的时候，值传递，引用传递，go语言中全部是值传递
+	*/
+
+	sum, _ := add(1, 10)
+	fmt.Println(sum)
+
+	sum1, _ := add1(1, 10, 10)
+	fmt.Println(sum1)
+
+	var testMap = map[string]string{
+		"mysql": "111",
+	}
+	test(testMap)
+
+	fmt.Println(testMap) // map[mysql:test]
+
+	//defer  链接数据库、打开文件、开始锁， 无论如何 最后都要记得去关闭数据库、关闭文件、解锁
+	var mu sync.Mutex
+
+	mu.Lock()
+	defer mu.Unlock() //defer后面的代码是会放在return之前执行的 多个defer的话， 是和栈一样的概念，先进后执行
+
+	A()
+
+}
+
+// func add(a, b int) int {  参数的类型一样可以简写
+//func add(a int, b int) (int, error) {
+//	return a + b, nil
+//}
+
+func add(a int, b int) (sum int, err error) { //如果这里定义好变量名称的话 return 语句后面可以不写
+
+	sum = a + b
+	//return sum, err
+	return
+}
+
+func test(a map[string]string) {
+	a["mysql"] = "test"
+}
+
+// 不定参数列表
+func add1(items ...int) (sum int, err error) {
+
+	for _, val := range items {
+		sum += val
+	}
+	return
+}
+
+//go语言错误处理的理念,
+//error panic  recover
+//一个函数可能出错,trycatch去包住这个函数,
+//11开发函数的人需要有一个返回值去告诉调用者是否成功,
+////go设计者认为必须要处理这个error,防御编程
+//go设计者要求我们必须要处理这个err,代码中大量的会出现iferr!=nil
+
+func A() (int, error) {
+	//panic("this is an panic")//panic会导致程序的退出4,平时开发中不要随便用,一般我们在哪里用到:我们一个服务各启动的过程中
+	//比如我的服务想要启动,必须有些依赖服务准备好,日志文件存在、mysql能链接通、比如配置文件没有问题,这个时候服务方能启动的时候
+	//如果我们的服务启动检查中发现了这些任何一个不满足那就调用panic主动调用
+	//但是你的服务一旦启动了,这个时候你的某行代码中不小心心panic那么不好意思你的程序挂了,这是重大事故
+	//但是架不住有些地方我们的代码写的不小心会导致被动触力panic   例如 map 不初始化 就赋值
+	//recover这个函数能捕获到panic
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println(r)
+		}
+	}()
+
+	var names map[string]string
+	names["go"] = "go工程师"
+	//fmt.Println("this is a func")
+	return 0, errors.New("this is an error")
+
+	/**
+	//1.defer需要放在panic之前定义,另外 recover只有在defer调用的函数中才会生效
+	//2.recover处理异常后,逻辑并不会恢复到panic的那个点去
+	//3.多个defer会形成栈,后定义的defer会先执行
+ 
+	*/
+}
+
+```
+
+
+## 15 结构体
+
+---
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	/**
+	type关键字
+	1.定义结构体
+	2.定义接口
+	3.定义类型别名
+	4.类型定义
+	5.类型判断
+	*/
+
+	var a byte = 'A'
+
+	fmt.Printf("%T", a)
+
+	//	结构体
+
+	type Person struct {
+		name    string
+		age     uint8
+		address string
+		height  float32
+	}
+
+	p1 := Person{"fofo", 23, "北京", 1.80} // 这种初始化方式 必须全部赋值
+	//p2 := Person{
+	//	name:    "bobo",
+	//	age:     19,
+	//	address: "北京",
+	//	height:  1.89,
+	//} // 这种方式更灵活
+
+	//初始化 与 赋值
+	var persons []Person
+	persons = append(persons, p1)
+	persons = append(persons, Person{
+		name: "bobby3",
+	})
+	//persons2 := []Person{
+	//	{name: "bobby1", age: 18, address: "wfwef", height: 1.80},
+	//	{
+	//		age: 19,
+	//	},
+	//}
+
+	//匿名结构体  取值
+	var p Person
+	p.age = 20
+	fmt.Println(p.height)
+	//匿名结构体
+	address := struct {
+		province string
+		city     string
+		address  string
+	}{
+		province: "北京市",
+		city:     "通州区",
+		address:  "xxx"}
+	fmt.Println(address.city)
+
+	//s := Student{
+	//	p: Person{
+	//		name: "bobby", age: 18,
+	//	},
+	//	score: 95.6,
+	//}
+
+	s := Student{
+		Person1: Person1{name: "ssss", age: 233},
+		score:   95.6,
+		name:    "fwefwefw",
+	}
+	s.printss()
+
+	s2 := Student{
+		Person1{name: "ssss", age: 23},
+		95.6,
+		"fofofofo", //里面和外面同时 有一样的字段时  外面的优先级高
+	}
+	fmt.Println(s.age)
+	fmt.Println(s2.age)
+	fmt.Println(s2.name) // fofofof
+
+}
+
+type Person1 struct {
+	name string
+	age  uint8
+}
+type Student struct {
+	//第一种嵌套方式
+	//p     Person
+	Person1 //匿名写法
+	score   float32
+	name    string
+}
+
+// 接收器的形态有两种
+// 指针形态是引用传递  非指针形态是值传递
+func (p *Student) printss() {
+	//有可能该函数中想要改p的值,就是person对象很大,数据较大的时候考虑使用指针方式
+
+	p.age = 19
+	fmt.Printf("name:%s, age:%d", p.name, p.age)
 }
 ```
