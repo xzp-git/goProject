@@ -156,7 +156,7 @@ func a(int, bool) (int, bool) {
 
 func main() {
 	_, ok := a(0, false)
-	// 此处只需要使用 ok 变量 匿名变量 相当于占位一样 不使用 不会报错
+	// 此处只需要使用 ok 变量 anonymous 相当于占位一样 不使用 不会报错
 	if ok {
 
 	}
@@ -943,7 +943,67 @@ func main() {
 ## 14. 函数
 
 ---
+- 1. 内存分析：值传递
+```go
 
+func exchangeNum(num1, num2 int) {
+	t := num1
+	num1 = num2
+	num2 = t
+}
+
+num1 := 10
+num2 := 20
+fmt.Printf("交换前的两个数：num1 = %v， num2 = %v \n", num1, num2)
+exchangeNum(num1, num2)
+fmt.Printf("交换前的两个数：num1 = %v， num2 = %v \n", num1, num2)
+```
+
+- 2. go中函数不支持重载（函数名相同，参数列表不同）
+- 3. go中支持可变参数（如果你希望函数带有可变数量的参数）
+```go
+// 定义了一个int 类型的 items 可变参数
+func add1(items ...int) (sum int, err error) {
+	// 函数内部处理可变参数的时候，将可变参数当做切片来处理
+	for _, val := range items {
+		sum += val
+	}
+	return
+}
+```
+- 4. 基本数类型和数组默认都是值传递，即进行值拷贝。在函数内修改，不会影响到原来的值。
+- 5. 以值传递方式的数据类型，如果希望在函数内的变量能修改函数外的变量，可以传入变量的地址&，函数内以指针的方式操作变量，从效果来看类似引用传递
+
+```go
+func exchangeNum(num1, num2 *int) {
+	t := *num1
+	*num1 = *num2
+	*num2 = t
+}
+
+num1 := 10
+num2 := 20
+fmt.Printf("交换前的两个数：num1 = %v， num2 = %v \n", num1, num2) // 交换前的两个数：num1 = 10， num2 = 20
+exchangeNum(&num1, &num2)
+fmt.Printf("交换前的两个数：num1 = %v， num2 = %v \n", num1, num2) // 交换前的两个数：num1 = 20， num2 = 10
+```
+
+- 6. 在go中，函数也是一种数据类型，可以赋值给一个变量，则该变量就是一个函数类型的变量了。通过该变量可以对函数调用
+  为了简化数据类型定义，GO支持自定义数据类型，基本语法：type 自定义数据类型名 数据类型
+  可以理解为：相当于起了一个别名.
+  例如 type myInt int ---> 这时myInt就等价int 来使用了
+  例如：type mySum func(int, int) int ---> 这时mySum就等价一个函数类型 func(int, int) int
+
+- 7. 函数既然是一种数据类型，因此在go中，函数可以作为形参，并且调用（把函数本身当做一种数据类型），支持对函数的返回值命名
+
+```go
+func add(a int, b int) (sum int, err error) { //如果这里定义好变量名称的话 return 语句后面可以不写
+
+	sum = a + b
+	//return sum, err
+	return
+}
+```
 
 ```go
 package main
